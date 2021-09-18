@@ -2,7 +2,7 @@
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
 from flask import Flask, request, jsonify, url_for, Blueprint
-from api.models import db, User
+from api.models import db, User, Product, Inbox
 from api.utils import generate_sitemap, APIException
 
 api = Blueprint('api', __name__)
@@ -16,3 +16,24 @@ def handle_hello():
     }
 
     return jsonify(response_body), 200
+
+@api.route('/messages', methods=["GET"])
+def getMessages():
+    messages = Inbox.getInbox()
+
+    return jsonify({messages: messages}), 200
+
+
+@api.route('/product', methods=["POST"])
+def create_product():
+    body = request.get_json()
+    if body is None:
+        return jsonify({"msg": "error body is null or empty"})
+    
+    name = body["name"]
+    price = body["price"]
+    user_id = body["user_id"]
+
+    product = Product.create_product(name, price, user_id)
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
+    return jsonify({"msg": "product created"}), 200
