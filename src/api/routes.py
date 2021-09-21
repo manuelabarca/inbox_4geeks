@@ -17,9 +17,9 @@ def handle_hello():
 
     return jsonify(response_body), 200
 
-@api.route('/messages', methods=["GET"])
-def getMessages():
-    messages = Inbox.getInbox()
+@api.route('/messages/<int:id>', methods=["GET"])
+def getMessages(id):
+    messages = Inbox.getInbox(id)
 
     return jsonify({messages: messages}), 200
 
@@ -35,5 +35,5 @@ def create_product():
     user_id = body["user_id"]
 
     product = Product.create_product(name, price, user_id)
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
+
     return jsonify({"msg": "product created"}), 200

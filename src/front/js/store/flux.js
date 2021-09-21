@@ -13,7 +13,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 					background: "white",
 					initial: "white"
 				}
-			]
+			],
+			inbox: [],
+			api: 'https://3001-brown-moth-2tivf4or.ws-us15.gitpod.io'
 		},
 		actions: {
 			// Use getActions to call a function within a fuction
@@ -41,6 +43,22 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 				//reset the global store
 				setStore({ demo: demo });
+			},
+			getMessages: () => {
+				const store = getStore()
+				fetch(`${store.api}/api/messages`,{
+					method: 'GET',
+					headers: {
+						'Content-type': 'application/json'
+					}
+				})
+				.then(resp => {
+					if(resp.ok){
+						return resp.json()
+					}
+				})
+				.then(data => console.log(data))
+				.catch(error => console.error("[Error to get inbox]", error))
 			}
 		}
 	};
